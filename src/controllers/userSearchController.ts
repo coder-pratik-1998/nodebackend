@@ -8,7 +8,7 @@ export const searchNearbyItems = async (req: Request, res: Response) => {
   const lng = Number(req.query.lng);
 
   // Validate that all required parameters are provided; if not, return a 400 Bad Request error
-  if (!item || !lat || !lng) {
+  if (!item || lat === undefined || lng === undefined) {
     return res.status(400).json({
       success: false,
       message: "Item and location required",
@@ -16,7 +16,7 @@ export const searchNearbyItems = async (req: Request, res: Response) => {
   }
 
   try {
-    // Execute raw SQL query using mysql2/promise connection pool
+    // Execute raw SQL query using mysql2/promise connection p+ool
     // Expected parameters in order: latitude, longitude, latitude, search string
     const [rows]: any = await pool.execute(
       `
