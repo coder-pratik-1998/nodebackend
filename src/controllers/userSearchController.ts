@@ -60,7 +60,7 @@ ORDER BY distance ASC
 -- Only return a maximum of 10 results
 LIMIT 10;
       `,
-      [lat, lng, lat, item] // Passed 'item' instead of %item% since CONCAT is used in the query above
+      [lat, lng, lat, item], // Passed 'item' instead of %item% since CONCAT is used in the query above
     );
 
     // Send the resulting data back to the client
@@ -68,14 +68,13 @@ LIMIT 10;
       success: true,
       data: rows,
     });
-
   } catch (error) {
     // If anything fails in the try block (like a database query error), log it and return 500
     console.error("Search error:", error);
     res.status(500).json({
       success: false,
       message: "Server error",
+      issue: error,
     });
   }
 };
-
