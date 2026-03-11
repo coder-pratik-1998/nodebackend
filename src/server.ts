@@ -71,7 +71,7 @@ app.get("/", (_req, res) => {
 app.get("/health", (_req, res) => {
   res.status(200).json({
     success: true,
-    message: "Backend is in good health",
+    message: "Backend is query updated",
     timestamp: new Date().toISOString(),
   });
 });
