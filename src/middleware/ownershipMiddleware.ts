@@ -79,3 +79,55 @@ export const verifyCategoryOwnership = async (
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
+
+/**
+ * Middleware to verify that the logged-in owner owns the restaurant.
+ * Checks restaurantId from URL params or request body.
+ */
+export const verifyRestaurantOwnership = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  // Extract restaurantId from params or body
+  const restaurantId = req.params.restaurantId || req.body.restaurantId;
+  const ownerId = (req as any).user?.id;
+
+  const logContext = "[RESTAURANT_OWNERSHIP_MIDDLEWARE]";
+
+  if (!restaurantId) {
+    console.error(`${logContext} Error: No restaurantId provided.`);
+    return res.status(400).json({
+      success: false,
+      message: "Restaurant ID is required.",
+    });
+  }
+
+  try {
+    console.log(
+      `${logContext} Verifying: Owner ${ownerId} for Restaurant ${restaurantId}`,
+    );
+
+    const [rows] = await pool.execute<RowDataPacket[]>(
+      "SELECT id FROM restaurants WHERE id = ? AND owner_id = ?",
+      [restaurantId, ownerId],
+    );
+
+    if (rows.length === 0) {
+      console.warn(
+        `${logContext} SECURITY ALERT: Owner ${ownerId} denied access to Restaurant ${restaurantId}`,
+      );
+      return res.status(403).json({
+        success: false,
+        message: "Unauthorized: You do not have ownership of this restaurant.",
+      });
+    }
+
+    console.log(`${logContext} Access Granted.`);
+    next();
+  } catch (error) {
+    console.error(`${logContext} Database Error:`, error);
+    res.status(500).json({ success: false, message: "Internal server error." });
+  }
+};
+

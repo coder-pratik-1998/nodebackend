@@ -23,7 +23,8 @@
     "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.17.5",
     "node-geocoder": "^4.4.1",
-    "nodemailer": "^8.0.1"
+    "nodemailer": "^8.0.1",
+    "razorpay": "^2.9.6"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
