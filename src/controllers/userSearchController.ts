@@ -18,7 +18,7 @@ export const searchNearbyItems = async (req: Request, res: Response) => {
   try {
     // Execute raw SQL query using mysql2/promise connection p+ool
     // Expected parameters in order: latitude, longitude, latitude, search string
-    const [rows]: any = await pool.execute(
+    const [rows]: any = await pool.query(
       `
    SELECT 
   r.id AS restaurant_id,
@@ -62,15 +62,13 @@ LIMIT 10;
       success: true,
       data: rows,
     });
-  } catch (error) {
+  } catch (error: any) {
     // If anything fails in the try block (like a database query error), log it and return 500
     console.error("Search error:", error);
     res.status(500).json({
       success: false,
       message: "Server error",
-      issue: error,
+      issue: String(error) || error.message,
     });
   }
 };
-
-
