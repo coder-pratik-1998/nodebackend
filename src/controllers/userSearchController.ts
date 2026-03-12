@@ -8,10 +8,10 @@ export const searchNearbyItems = async (req: Request, res: Response) => {
   const lng = Number(req.query.lng);
 
   // Validate that all required parameters are provided; if not, return a 400 Bad Request error
-  if (!item || lat === undefined || lng === undefined) {
+  if (!item || isNaN(lat) || isNaN(lng)) {
     return res.status(400).json({
       success: false,
-      message: "Item and location required",
+      message: "Item and valid location required",
     });
   }
 
@@ -48,7 +48,6 @@ JOIN menu_items m ON r.id = m.restaurant_id
 WHERE 
   m.item_name LIKE CONCAT('%', ?, '%')
   AND m.is_available = 1
-  AND r.is_open = 1
   AND r.is_subscribed = 1
 
 ORDER BY distance ASC
