@@ -9,6 +9,8 @@ import userRoutes from "./routes/userAuthRoutes.js";
 import ownerRoutes from "./routes/ownerAuthRoutes.js";
 import restaurantRoutes from "./routes/restaurantRoutes.js";
 import userSearchRoutes from "./routes/userSearchRoutes.js";
+import cartRoutes from "./routes/cartRoutes.js";
+import userRestaurantRoutes from "./routes/userRestaurantRoutes.js";
 
 /* -----------------------------------
    Load Environment Variables         
@@ -60,6 +62,7 @@ app.use("/user/auth", userRoutes);
 app.use("/owner/auth", ownerRoutes);
 app.use("/owner/restaurant", restaurantRoutes);
 app.use("/api/user", userSearchRoutes);
+app.use("/api/restaurants", userRestaurantRoutes);
 
 /* -----------------------------------
    System Routes
@@ -75,6 +78,10 @@ app.get("/health", (_req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+
+
+app.use("/api/cart", cartRoutes);
+
 
 /* -----------------------------------
    Start Server After DB Connects
