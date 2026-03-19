@@ -11,6 +11,8 @@ import restaurantRoutes from "./routes/restaurantRoutes.js";
 import userSearchRoutes from "./routes/userSearchRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import userRestaurantRoutes from "./routes/userRestaurantRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
+
 
 /* -----------------------------------
    Load Environment Variables         
@@ -81,6 +83,9 @@ app.get("/health", (_req, res) => {
 
 
 app.use("/api/cart", cartRoutes);
+
+
+app.use("/api/admin", adminRoutes);
 
 
 /* -----------------------------------
